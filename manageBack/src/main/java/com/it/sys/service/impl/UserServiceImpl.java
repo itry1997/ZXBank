@@ -2,6 +2,7 @@ package com.it.sys.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.it.common.utils.AesUtil;
 import com.it.common.utils.JwtUtil;
 import com.it.sys.entity.Menu;
 import com.it.sys.entity.User;
@@ -58,7 +59,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         wrapper.eq(User::getUsername,user.getUsername());
         User loginUser = this.getOne(wrapper);
         // 用户名存在,并且密码和传入的密码匹配,则生成token,将用户信息存入redis
-        if(loginUser != null && passwordEncoder.matches(user.getPassword(),loginUser.getPassword())){
+
+        String passwd = AesUtil.decrypt(user.getPassword(),"123XXXXXXXXXX456");
+
+        // System.out.println("user.getPassword()  " + user.getPassword());
+        // System.out.println("loginUser.getPassword() " + loginUser.getPassword());
+        if(loginUser != null && passwordEncoder.matches(passwd,loginUser.getPassword())){
             Map<String,Object> data = new HashMap<>();
             // 待优化，最终方案jwt
 //            String key = "user" + UUID.randomUUID();

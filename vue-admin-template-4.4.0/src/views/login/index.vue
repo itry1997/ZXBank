@@ -54,6 +54,8 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
+import AES from '@/utils/crypto'
+
 
 export default {
   name: 'Login',
@@ -109,6 +111,8 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
+          // 尝试加密
+          this.loginForm.password = AES.encrypt(this.loginForm.password, '123XXXXXXXXXX456')
           this.$store.dispatch('user/login', this.loginForm).then(() => {
             this.$router.push({ path: this.redirect || '/' })
             this.loading = false
