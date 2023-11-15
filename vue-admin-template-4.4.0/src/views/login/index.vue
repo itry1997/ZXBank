@@ -56,7 +56,6 @@
 import { validUsername } from '@/utils/validate'
 import AES from '@/utils/crypto'
 
-
 export default {
   name: 'Login',
   data() {
