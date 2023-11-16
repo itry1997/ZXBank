@@ -1,6 +1,7 @@
 package com.it;
 
 import com.it.sys.entity.User;
+import com.it.sys.mapper.TaskMapper;
 import com.it.sys.mapper.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,19 @@ class ManageBackApplicationTests {
     @Resource
     private UserMapper userMapper;
 
+    @Resource
+    private TaskMapper taskMapper;
+
     @Test
     void testMapper() {
         List<User> users = userMapper.selectList(null);
         users.forEach(System.out::println);
     }
+
+    @Test
+    void testMapper2(){
+        System.out.println(taskMapper.findTaskById(1));
+    }
+
 
 }
