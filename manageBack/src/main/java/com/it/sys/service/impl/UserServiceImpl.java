@@ -51,6 +51,88 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
     @Autowired
     private IMenuService menuService;
 
+
+    @Override
+    @Transactional
+    public Map<String, Object> register(User user){
+        Map<String,Object> data = new HashMap<>();
+        // 空值处理
+        if (user == null) {
+            throw new IllegalArgumentException("参数不能为空!");
+        }
+        if (StringUtils.isBlank(user.getUsername())) {
+            data.put("Msg", "账号不能为空!");
+            return data;
+        }
+        if (StringUtils.isBlank(user.getPassword())) {
+            data.put("Msg", "密码不能为空!");
+            return data;
+        }
+        if (StringUtils.isBlank(user.getPassword2())) {
+            data.put("Msg", "确认密码不能为空!");
+            return data;
+        }
+        if (StringUtils.isBlank(user.getEmail())) {
+            data.put("Msg", "邮箱不能为空!");
+            return data;
+        }
+        if (StringUtils.isBlank(user.getPhone())) {
+            data.put("Msg", "电话不能为空!");
+            return data;
+        }
+        if (StringUtils.isBlank(user.getAvatar())) {
+            user.setAvatar("https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
+        }
+
+        if(!user.getPassword2().equals(user.getPassword())) {
+            data.put("Msg", "两次输入密码不相等!");
+            return data;
+        }
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+
+        // 验证账号
+        wrapper.eq(User::getUsername,user.getUsername());
+        User u = this.getOne(wrapper);
+        if (u != null) {
+            data.put("Msg", "该账号已存在!");
+            return data;
+        }
+        wrapper.clear();
+
+        // 验证邮箱
+        wrapper.eq(User::getEmail,user.getEmail());
+        User e = this.getOne(wrapper);
+        if (e != null) {
+            data.put("Msg", "该邮箱已被注册!");
+            return data;
+        }
+        wrapper.clear();
+
+        // 验证电话
+        wrapper.eq(User::getPhone,user.getPhone());
+        User p = this.getOne(wrapper);
+        if (p != null) {
+            data.put("Msg", "该电话已被注册!");
+            return data;
+        }
+        wrapper.clear();
+
+        // 注册账号
+        user.setDeleted(0);
+        user.setStatus(1);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        this.baseMapper.insert(user);
+        // 写入用户角色表
+        List<Integer> roleIdList = user.getRoleIdList();
+        if (roleIdList != null){
+            for (Integer roleId : roleIdList){
+                userRoleMapper.insert(new UserRole(null,user.getId(),roleId));
+            }
+        }
+        data.put("Msg","success");
+        return data;
+    }
+
     @Override
     public Map<String, Object> login(User user) {
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();

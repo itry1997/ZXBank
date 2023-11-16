@@ -27,6 +27,7 @@ public class MyInterceptorConfic implements WebMvcConfigurer {
                         "/user/info",
                         "/user/logout",
                         "/error",
+                        "/user/register",
                         "/swagger-ui/**",
                         "/swagger-resources/**",
                         "/v3/**"

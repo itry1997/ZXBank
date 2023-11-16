@@ -39,6 +39,16 @@ public class UserController {
 //        return Result.success(list);
 //    }
 
+    @PostMapping("/register")
+    public Result<?> register(@RequestBody User user){
+        Map<String, Object> data = userService.register(user);
+        String msg = (String)data.get("Msg");
+        if(msg.equals("success")) {
+            return Result.success("新用户注册成功！");
+        }
+        return Result.fail(20001,msg);
+    }
+
     @PostMapping("/login")
     public Result<Map<String,Object>> login(@RequestBody User user){
         // @RequestBody 接收前端传递给后端的json字符串中的数据(请求体中的数据)
