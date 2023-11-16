@@ -4,13 +4,31 @@
       <el-row>
         <el-col :span="23">
           <!-- 搜索框 -->
-          <el-input v-model="searchModel.userid" placeholder="创建人" clearable></el-input>
-          <el-input v-model="searchModel.title" placeholder="代办事项" clearable></el-input>
+          <el-input
+            v-model="searchModel.userid"
+            placeholder="创建人"
+            clearable
+          ></el-input>
+          <el-input
+            v-model="searchModel.title"
+            placeholder="代办事项"
+            clearable
+          ></el-input>
 
-          <el-button @click="getTaskList" type="primary" round icon="el-icon-search">查询</el-button>
+          <el-button
+            @click="getTaskList"
+            type="primary"
+            round
+            icon="el-icon-search"
+          >查询</el-button>
         </el-col>
         <el-col :span="1">
-          <el-button @click="openEditUI(null)" type="primary" round icon="el-icon-plus"></el-button>
+          <el-button
+            @click="openEditUI(null)"
+            type="primary"
+            round
+            icon="el-icon-plus"
+          ></el-button>
         </el-col>
       </el-row>
     </el-card>
@@ -34,11 +52,10 @@
           label="任务标题"
           width="180"
         >
-      </el-table-column>
+        </el-table-column>
         <el-table-column
           prop="description"
           label="任务描述"
-          
         >
         </el-table-column>
         <el-table-column
@@ -58,9 +75,15 @@
           label="任务状态"
           width="180"
         >
-          <template slot-scope = "scope">
-            <el-tag v-if="scope.row.status">正常</el-tag>
-            <el-tag v-else type="danger">禁用</el-tag>
+          <template slot-scope="scope">
+            <el-select v-model="scope.row.status">
+              <el-option
+                v-for="option in statusOptions"
+                :key="option.value"
+                :label="option.label"
+                :value="option.value"
+              ></el-option>
+            </el-select>
           </template>
         </el-table-column>
         <!-- <el-table-column
@@ -68,10 +91,23 @@
           label="电子邮件"
         >
         </el-table-column> -->
-        <el-table-column label="操作" width="180">
+        <el-table-column
+          label="操作"
+          width="180"
+        >
           <template slot-scope="scope">
-            <el-button @click="openEditUI(scope.row.id)" type="primary" icon="el-icon-edit" circle></el-button>
-            <el-button @click="deleteTaskById(scope.row)" type="danger" icon="el-icon-delete" circle></el-button>
+            <el-button
+              @click="openEditUI(scope.row.id)"
+              type="primary"
+              icon="el-icon-edit"
+              circle
+            ></el-button>
+            <el-button
+              @click="deleteTaskById(scope.row)"
+              type="danger"
+              icon="el-icon-delete"
+              circle
+            ></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -90,32 +126,58 @@
     </el-pagination>
 
     <!-- 用户信息编辑对话框  -->
-    <el-dialog @close="clearForm" :title="title" :visible.sync="dialogFormVisible">
-      <el-form :model="taskForm" :rules="rules" ref="taskFormRef">
-        <el-form-item label="任务标题" :label-width="formLabelWidth" prop="username">
-          <el-input v-model="taskForm.userid" autocomplete="off" 
-          :disabled="taskForm.id !== null && taskForm.id !== undefined"></el-input>
+    <el-dialog
+      @close="clearForm"
+      :title="title"
+      :visible.sync="dialogFormVisible"
+    >
+      <el-form
+        :model="taskForm"
+        :rules="rules"
+        ref="taskFormRef"
+      >
+        <el-form-item
+          label="任务标题"
+          :label-width="formLabelWidth"
+          prop="username"
+        >
+          <el-input
+            v-model="taskForm.userid"
+            autocomplete="off"
+            :disabled="taskForm.id !== null && taskForm.id !== undefined"
+          ></el-input>
         </el-form-item>
         <el-form-item
           label="任务描述"
           :label-width="formLabelWidth"
           prop="describe"
-          
         >
-          <el-input type="password" v-model="taskForm.describe" autocomplete="off"></el-input>
+          <el-input
+            type="password"
+            v-model="taskForm.describe"
+            autocomplete="off"
+          ></el-input>
         </el-form-item>
-        <el-form-item label="截止日期" :label-width="formLabelWidth" prop="endtime">
+        <el-form-item
+          label="截止日期"
+          :label-width="formLabelWidth"
+          prop="endtime"
+        >
           <!-- <el-input v-model="taskForm.phone" autocomplete="off"></el-input> -->
           <el-date-picker
-              v-model="taskForm.endtime"
-              type="datetime"
-              placeholder="选择日期时间"
-              value-format="yyyy-MM-dd HH:mm:ss"
-              format="yyyy-MM-dd HH:mm:ss">
+            v-model="taskForm.endtime"
+            type="datetime"
+            placeholder="选择日期时间"
+            value-format="yyyy-MM-dd HH:mm:ss"
+            format="yyyy-MM-dd HH:mm:ss"
+          >
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="事项状态" :label-width="formLabelWidth"
-        v-if="taskForm.id !== null && taskForm.id !== undefined">
+        <el-form-item
+          label="事项状态"
+          :label-width="formLabelWidth"
+          v-if="taskForm.id !== null && taskForm.id !== undefined"
+        >
           <el-switch
             v-model="taskForm.status"
             :active-value="1"
@@ -124,13 +186,26 @@
           </el-switch>
 
         </el-form-item>
-        <el-form-item label="创建人" :label-width="formLabelWidth">
-          <el-input v-model="taskForm.userid" autocomplete="off"  :disabled="taskForm.id !== null && taskForm.id !== undefined"></el-input>
+        <el-form-item
+          label="创建人"
+          :label-width="formLabelWidth"
+        >
+          <el-input
+            v-model="taskForm.userid"
+            autocomplete="off"
+            :disabled="taskForm.id !== null && taskForm.id !== undefined"
+          ></el-input>
         </el-form-item>
-     </el-form> 
-      <div slot="footer" class="dialog-footer">
+      </el-form>
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
         <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="saveTask">确 定</el-button>
+        <el-button
+          type="primary"
+          @click="saveTask"
+        >确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -153,6 +228,7 @@ export default {
         pageNo: 1,
         pageSize: 5
       },
+      statusOptions: [],
       taskList: [],
       pickerOptions1: {
           shortcuts: [{
@@ -260,7 +336,23 @@ export default {
           // console.log(response.data)
           this.taskForm = response.data
           console.log(this.taskForm)
-        })
+        }).catch(error => {
+          if (error.response) {
+            // 如果有响应，表示请求已经发送，并且服务器返回了非成功的状态码
+            if (error.response.code === 20001) {
+              // 处理状态码为 404 的情况
+              this.$message.error("只能修改自己的任务");
+            }
+          } else {
+            // 如果没有响应，表示请求未能发送到服务器，可能是网络问题等
+            this.$message.error("网络错误");
+          }
+          console.error("请求失败:", error);
+        });
+        taskApi.getStatus(id).then(response => {
+          // console.log(response.data)
+          this.statusOptions = response.data
+        });
       }
       this.dialogFormVisible = true
     },
@@ -277,7 +369,9 @@ export default {
         this.taskList = response.data.rows
         this.total = response.data.total
       })
-    }
+
+    },
+   
   },
   created() {
     this.getTaskList()

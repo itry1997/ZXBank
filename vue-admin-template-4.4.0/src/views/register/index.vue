@@ -2,7 +2,7 @@
   <div class="register">
     <section class="form-container">
       <div class="manage-tip">
-        <span class="title">后台管理系统</span>
+        <span class="title">任务代办管理系统</span>
         <el-form
           :rules="rules"
           ref="ruleFormRef"
@@ -10,9 +10,9 @@
           class="registerForm"
           label-width="80px"
         >
-          <el-form-item label="用户名" prop="name">
+          <el-form-item label="用户名" prop="username">
             <el-input
-              v-model="registerUser.name"
+              v-model="registerUser.username"
               placeholder="请输入用户名"
             ></el-input>
           </el-form-item>
@@ -20,6 +20,12 @@
             <el-input
               v-model="registerUser.email"
               placeholder="请输入邮箱"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="手机号" prop="phone">
+            <el-input
+              v-model="registerUser.phone"
+              placeholder="请输入手机号"
             ></el-input>
           </el-form-item>
           <el-form-item label="密码" prop="password">
@@ -68,6 +74,16 @@ export default{
       callback();
     }
   };
+    var validatePhoneNumber = (rule, value, callback) => {
+    const phoneRegex = /^1[3456789]\d{9}$/; // 手机号正则表达式
+    if (!value) {
+      callback(new Error("请输入手机号码"));
+    } else if (!phoneRegex.test(value)) {
+      callback(new Error("请输入有效的手机号码"));
+    } else {
+      callback();
+    }
+  };
     var validatePass2 = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请重新输入密码"));
@@ -80,8 +96,9 @@ export default{
     return {
       ruleFormRef: null,
       registerUser: {
-        name: "",
+        username: "",
         email: "",
+        phone:"",
         password: "",
         password2: "",
         // identity: "",
@@ -91,6 +108,10 @@ export default{
         name: [
           { required: true, message: "用户名不能为空", trigger: "change" },
           { min: 2, max: 30, message: "长度在2到30个字符之间", trigger: "blur" },
+        ],
+        phone: [
+          { required: true, message: "手机号不能为空", trigger: "change" },
+          { validator: validatePhoneNumber, trigger: "blur" },
         ],
         password: [
           { required: true, message: "密码不能为空", trigger: "blur" },
@@ -102,7 +123,7 @@ export default{
         ],
         email: [
         { required: true, message: "邮箱不能为空", trigger: "blur" },
-        { validator: this.validateEmail, trigger: 'blur' }
+        { validator: validateEmail, trigger: 'blur' }
       ],
         
       }
@@ -124,6 +145,11 @@ export default{
             })
             .catch(error => {
               console.error("error submit!", error);
+              this.$message({
+                message: error.response.data.message,
+                type:'warning'
+              });
+
             });
         } else {
           console.log("error submit!");
@@ -139,8 +165,9 @@ export default{
   position: relative;
   width: 100%;
   height: 100%;
-  /* background: url(./assets/bg.jpg) no-repeat center center; */
-  background-size: 100% 100%;
+  background-image: url("../../assets/rg.jpg");
+  background-size: 100%;
+  overflow: hidden;
 }
 .form-container {
   width: 500px;

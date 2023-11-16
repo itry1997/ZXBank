@@ -32,7 +32,7 @@ export default {
 
   updateTask(task) {
     return request({
-      url: '/task',
+      url: '/task/update',
       method: 'put',
       data: task
     })
@@ -49,6 +49,13 @@ export default {
     return request({
       url: `/task/${id}`,
       method: 'delete'
+    })
+  },
+  getStatus(id){
+    return request({
+      url: `/task/getById`,
+      method: 'post',
+      data:id,
     })
   }
 
