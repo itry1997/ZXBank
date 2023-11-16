@@ -43,11 +43,11 @@
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">点击登录</el-button>
 
-<!--      <div class="tips">-->
-<!--        <span style="margin-right:20px;">username: admin</span>-->
-<!--        <span> password: any</span>-->
-<!--      </div>-->
-
+      <div class="tiparea">
+            <p>
+              还没有账号? 现在<router-link to="/register">注册</router-link>
+            </p>
+      </div>
     </el-form>
   </div>
 </template>
@@ -67,7 +67,7 @@ export default {
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('你的密码就这么短吗？至少6位以上！'))
+        callback(new Error('密码至少6位以上！'))
       } else {
         callback()
       }
