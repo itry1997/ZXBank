@@ -114,4 +114,14 @@ public class UserController {
         return Result.success("删除用户成功");
     }
 
+    @PostMapping("/register")
+    public Result<?> register(@RequestBody User user){
+        Map<String, Object> data = userService.register(user);
+        String msg = (String)data.get("Msg");
+        if(msg.equals("success")) {
+            return Result.success("新用户注册成功！");
+        }
+        return Result.fail(20001,msg);
+    }
+
 }

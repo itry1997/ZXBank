@@ -31,6 +31,9 @@ public class User implements Serializable {
 
     private String password;
 
+    @TableField(exist = false)
+    private String password2;
+
     private String email;
 
     private String phone;
