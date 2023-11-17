@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,7 +25,10 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements IT
     @Autowired
     private JwtUtil jwtUtil;
     @Override
-    public Boolean  addTask(Task task) {
+    public Boolean  addTask(Task task,String token) {
+        User user = jwtUtil.parseToken(token,User.class);
+        task.setUserid(user.getId());
+        task.setUsername(user.getUsername());
         task.setStatus(0);
         task.setNextstatus(1);
         taskMapper.insert(task);
@@ -41,6 +45,7 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements IT
             e.printStackTrace();
         }
         if(user != null&&user.getId().equals(task.getUserid())){
+            taskMapper.deleteById(user.getId());
             return true;
         }
         return false;
@@ -63,7 +68,7 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements IT
         Integer state_before = beforetask.getStatus();
         String title = updateTask.getTitle();
         String description = updateTask.getDescription();
-        LocalDate endtime = updateTask.getEndtime();
+        LocalDateTime endtime = updateTask.getEndtime();
         Integer state_after = updateTask.getStatus();
         if(user!=null&&user.getId().equals(updateTask.getUserid())&& state_before!=2){
             if(state_after >= state_before){
@@ -82,17 +87,18 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, Task> implements IT
         return task;
     }
 
-    //未开始  进行中  已完成
+    //已创建  进行中  已完成
     @Override
     public TaskDto getById(Integer id) {
         Task task = taskMapper.selectById(id);
         TaskDto taskDto = new TaskDto();
         BeanUtils.copyProperties(task,taskDto);
-        taskDto.setStatusList(new HashMap<>());
         if(task.getStatus().equals(0)){
-            taskDto.getStatusList().put(1,"进行中");
+            taskDto.setNextStatusString("进行中");
+            taskDto.setNextstatus(1);
         }else if (task.getStatus().equals(1)){
-            taskDto.getStatusList().put(2,"已完成");
+            taskDto.setNextStatusString("已完成");
+            taskDto.setNextstatus(2);
         }
         return taskDto;
     }

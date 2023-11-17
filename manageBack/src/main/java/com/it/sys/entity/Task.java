@@ -11,6 +11,7 @@ import net.sf.jsqlparser.expression.DateTimeLiteralExpression;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @TableName("x_task")
 @Data
@@ -18,28 +19,19 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class Task implements Serializable {
     private static final long serialVersionUID = 1L;
+
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     private String title;
     private String description;
-    private LocalDate begintime;
-    private LocalDate endtime;
+    private LocalDateTime begintime;
+    private LocalDateTime endtime;
     private Integer userid;
     private Integer status;
     private Integer nextstatus;
 
-    @Override
-    public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", title=" + title +
-                ", describe=" + description +
-                ", begin=" + begintime +
-                ", end=" + endtime +
-                ", userId=" + userid +
-                ", state=" + status +
-                ", nextState=" + nextstatus +
-                "}";
-    }
+    private String username;
+
+
 
 }

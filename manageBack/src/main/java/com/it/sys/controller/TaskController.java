@@ -27,8 +27,8 @@ public class TaskController {
 
     // 接口测试正确
     @PostMapping("/add")
-    public Result<String> addUser(@RequestBody Task task){
-        taskService.addTask(task);
+    public Result<String> addUser(@RequestBody Task task,@RequestHeader("X-Token") String token){
+        taskService.addTask(task,token);
         return Result.success("新增任务成功");
     }
 
@@ -39,7 +39,7 @@ public class TaskController {
         if (aBoolean){
             return Result.success("删除成功");
         }else {
-            return Result.fail("删除失败");
+            return Result.fail("用户只能删除自己创建的任务");
         }
 
     }

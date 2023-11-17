@@ -44,6 +44,12 @@ export const constantRoutes = [
   },
 
   {
+    path: '/register',
+    component: () => import('@/views/register/index'),
+    hidden: true
+  },
+
+  {
     path: '/',
     component: Layout,
     redirect: '/dashboard',

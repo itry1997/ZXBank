@@ -47,6 +47,11 @@
 <!--        <span style="margin-right:20px;">username: admin</span>-->
 <!--        <span> password: any</span>-->
 <!--      </div>-->
+      <div class="tiparea">
+        <p>
+          还没有账号? 现在<router-link to="/register">注册</router-link>
+        </p>
+      </div>
 
     </el-form>
   </div>
@@ -68,7 +73,7 @@ export default {
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('你的密码就这么短吗？至少6位以上！'))
+        callback(new Error('密码至少6位以上'))
       } else {
         callback()
       }
@@ -240,6 +245,15 @@ $light_gray:#eee;
     color: $dark_gray;
     cursor: pointer;
     user-select: none;
+  }
+
+  .tiparea {
+    text-align: right;
+    font-size: 12px;
+    color: #333;
+  }
+  .tiparea p a {
+    color: #409eff;
   }
 }
 </style>

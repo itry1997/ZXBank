@@ -13,5 +13,5 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TaskDto extends Task {
-    private HashMap<Integer,String> statusList;
+    private String nextStatusString;
 }

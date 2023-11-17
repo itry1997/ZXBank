@@ -32,37 +32,38 @@
         <el-table-column
           prop="id"
           label="用户ID"
-          width="180"
+          width="240"
         >
         </el-table-column>
         <el-table-column
           prop="username"
           label="用户名"
-          width="180"
+          width="240"
         >
         </el-table-column>
         <el-table-column
           prop="phone"
           label="电话"
-          width="180"
+          width="240"
         >
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           prop="status"
           label="用户状态"
-          width="180"
+          width="240"
         >
           <template slot-scope = "scope">
             <el-tag v-if="scope.row.status">正常</el-tag>
             <el-tag v-else type="danger">禁用</el-tag>
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           prop="email"
           label="电子邮件"
+          width="240"
         >
         </el-table-column>
-        <el-table-column label="操作" width="180">
+        <el-table-column label="操作" width="240">
           <template slot-scope="scope">
             <el-button @click="openEditUI(scope.row.id)" type="primary" icon="el-icon-edit" circle></el-button>
             <el-button @click="deleteUserById(scope.row)" type="danger" icon="el-icon-delete" circle></el-button>

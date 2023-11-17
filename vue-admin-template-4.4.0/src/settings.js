@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '比奇堡坏蛋联盟后台管理',
+  title: '待办事项管理系统',
 
   /**
    * @type {boolean} true | false

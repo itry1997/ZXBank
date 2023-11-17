@@ -255,12 +255,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         this.baseMapper.insert(user);
         // 写入用户角色表
-        List<Integer> roleIdList = user.getRoleIdList();
-        if (roleIdList != null){
-            for (Integer roleId : roleIdList){
-                userRoleMapper.insert(new UserRole(null,user.getId(),roleId));
-            }
-        }
+        userRoleMapper.insert(new UserRole(null,user.getId(),2));
         data.put("Msg","success");
         return data;
     }
